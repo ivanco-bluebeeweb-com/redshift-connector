@@ -59,6 +59,6 @@ async def audit_redshift(ctx, params: AuditRedshiftParams) -> ActionResult:
 
     return ActionResult.success(data=AuditReport(
         findings=findings,
-        clusters_checked=len(clusters),
-        workgroups_checked=len(workgroups),
+        clusters_scanned=len(clusters),
+        workgroups_scanned=len(workgroups),
     ))

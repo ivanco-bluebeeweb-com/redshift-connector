@@ -133,6 +133,7 @@ class ListNamespacesParams(BaseModel):
 
 class RedshiftNamespace(sdl.Entity):
     namespace_name: str = ""
+    namespace_id: str = ""
     status: str = ""
     db_name: str = ""
     admin_username: str = ""
@@ -176,6 +177,7 @@ class ExecuteSqlParams(BaseModel):
 class StatementSubmitResult(sdl.Entity):
     statement_id: str = ""
     status: str = ""
+    created_at: str = ""
 
 
 class GetStatementStatusParams(BaseModel):
@@ -188,6 +190,9 @@ class StatementStatus(sdl.Entity):
     status: str = ""
     error: str = ""
     has_result_set: bool = False
+    error_message: str = ""
+    result_rows: int = 0
+    duration_ns: int = 0
 
 
 class GetStatementResultParams(BaseModel):

@@ -1853,6 +1853,11 @@
                 "title": "Namespace Name",
                 "type": "string"
               },
+              "namespace_id": {
+                "default": "",
+                "title": "Namespace Id",
+                "type": "string"
+              },
               "db_name": {
                 "default": "",
                 "title": "Db Name",
@@ -2319,6 +2324,11 @@
             "default": "",
             "title": "Statement Id",
             "type": "string"
+          },
+          "created_at": {
+            "default": "",
+            "title": "Created At",
+            "type": "string"
           }
         },
         "required": [
@@ -2439,6 +2449,21 @@
             "default": false,
             "title": "Has Result Set",
             "type": "boolean"
+          },
+          "error_message": {
+            "default": "",
+            "title": "Error Message",
+            "type": "string"
+          },
+          "result_rows": {
+            "default": 0,
+            "title": "Result Rows",
+            "type": "integer"
+          },
+          "duration_ns": {
+            "default": 0,
+            "title": "Duration Ns",
+            "type": "integer"
           }
         },
         "required": [
