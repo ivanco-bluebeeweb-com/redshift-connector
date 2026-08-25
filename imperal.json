@@ -1,0 +1,3218 @@
+{
+  "manifest_schema_version": 3,
+  "sdk_version": "5.11.0",
+  "app_id": "redshift-connector",
+  "version": "0.1.0",
+  "name": "Amazon Redshift",
+  "description": "Connect your own AWS account to manage Redshift provisioned clusters, Redshift Serverless workgroups, databases, and run SQL via the Redshift Data API, and audit warehouse cost and health -- from Imperal. Uses your own IAM Access Key -- nothing is hosted or proxied by Imperal beyond the request itself.",
+  "icon": "icon.svg",
+  "actions_explicit": true,
+  "system": false,
+  "capabilities": [
+    "redshift:read",
+    "redshift:write"
+  ],
+  "tools": [
+    {
+      "name": "connect_redshift",
+      "description": "Connect your own AWS account by saving an IAM Access Key ID + Secret Access Key, after checking it actually works against Redshift.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "create:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "access_key_id": {
+            "default": "",
+            "description": "Your AWS IAM Access Key ID, e.g. AKIAIOSFODNN7EXAMPLE.",
+            "title": "Access Key Id",
+            "type": "string"
+          },
+          "secret_access_key": {
+            "default": "",
+            "description": "Your AWS IAM Secret Access Key.",
+            "title": "Secret Access Key",
+            "type": "string"
+          },
+          "session_token": {
+            "default": "",
+            "description": "Optional session token for temporary/SSO credentials. Leave empty for a permanent access key.",
+            "title": "Session Token",
+            "type": "string"
+          },
+          "region": {
+            "default": "us-east-1",
+            "description": "AWS region your Redshift clusters/workgroups live in, e.g. us-east-1.",
+            "title": "Region",
+            "type": "string"
+          },
+          "label": {
+            "default": "",
+            "description": "Optional friendly name for this connection.",
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "title": "ConnectRedshiftParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connected": {
+            "default": false,
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          },
+          "region": {
+            "default": "",
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "title": "ProviderConnection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.connect_redshift",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_connections",
+      "description": "List the connected AWS accounts (for Redshift access).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "description": "Explicit empty params model -- V17 disallows untyped handlers.",
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "ProviderConnection": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "connected": {
+                "default": false,
+                "title": "Connected",
+                "type": "boolean"
+              },
+              "detail": {
+                "default": "",
+                "title": "Detail",
+                "type": "string"
+              },
+              "region": {
+                "default": "",
+                "title": "Region",
+                "type": "string"
+              }
+            },
+            "title": "ProviderConnection",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/ProviderConnection"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "ProviderConnectionList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_connections",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "disconnect_redshift",
+      "description": "Disconnect an AWS account: deletes the saved Access Key. Nothing in AWS itself is changed.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "delete:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "description": "Connection id from list_connections.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "connection_id"
+        ],
+        "title": "DisconnectRedshiftParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.disconnect_redshift",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_clusters",
+      "description": "List Redshift provisioned clusters in the connected AWS account/region.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ListClustersParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "RedshiftCluster": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "cluster_identifier": {
+                "default": "",
+                "title": "Cluster Identifier",
+                "type": "string"
+              },
+              "node_type": {
+                "default": "",
+                "title": "Node Type",
+                "type": "string"
+              },
+              "cluster_status": {
+                "default": "",
+                "title": "Cluster Status",
+                "type": "string"
+              },
+              "number_of_nodes": {
+                "default": 0,
+                "title": "Number Of Nodes",
+                "type": "integer"
+              },
+              "publicly_accessible": {
+                "default": false,
+                "title": "Publicly Accessible",
+                "type": "boolean"
+              },
+              "db_name": {
+                "default": "",
+                "title": "Db Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "RedshiftCluster",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/RedshiftCluster"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "ClusterList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_clusters",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "get_cluster",
+      "description": "Read one Redshift provisioned cluster in full by its identifier.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "description": "Cluster identifier, e.g. 'my-cluster'.",
+            "title": "Cluster Identifier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster_identifier"
+        ],
+        "title": "GetClusterParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "cluster_identifier": {
+            "default": "",
+            "title": "Cluster Identifier",
+            "type": "string"
+          },
+          "node_type": {
+            "default": "",
+            "title": "Node Type",
+            "type": "string"
+          },
+          "cluster_status": {
+            "default": "",
+            "title": "Cluster Status",
+            "type": "string"
+          },
+          "number_of_nodes": {
+            "default": 0,
+            "title": "Number Of Nodes",
+            "type": "integer"
+          },
+          "publicly_accessible": {
+            "default": false,
+            "title": "Publicly Accessible",
+            "type": "boolean"
+          },
+          "db_name": {
+            "default": "",
+            "title": "Db Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "RedshiftCluster",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.get_cluster",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "delete_cluster",
+      "description": "Permanently delete a Redshift provisioned cluster. Cannot be undone unless a final snapshot is taken.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "delete:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "description": "Cluster identifier to delete.",
+            "title": "Cluster Identifier",
+            "type": "string"
+          },
+          "skip_final_snapshot": {
+            "default": false,
+            "description": "If false (default), a final snapshot is taken before deletion.",
+            "title": "Skip Final Snapshot",
+            "type": "boolean"
+          },
+          "final_snapshot_identifier": {
+            "default": "",
+            "description": "Name for the final snapshot, required unless skip_final_snapshot is true.",
+            "title": "Final Snapshot Identifier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster_identifier"
+        ],
+        "title": "DeleteClusterParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.delete_cluster",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "reboot_cluster",
+      "description": "Reboot a Redshift provisioned cluster.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "update:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "description": "Cluster identifier to reboot.",
+            "title": "Cluster Identifier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster_identifier"
+        ],
+        "title": "RebootClusterParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.reboot_cluster",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "resize_cluster",
+      "description": "Resize a Redshift provisioned cluster -- change its node type and/or node count.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "update:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "description": "Cluster identifier to resize.",
+            "title": "Cluster Identifier",
+            "type": "string"
+          },
+          "node_type": {
+            "description": "New node type, e.g. 'ra3.xlplus'.",
+            "title": "Node Type",
+            "type": "string"
+          },
+          "number_of_nodes": {
+            "description": "New node count.",
+            "title": "Number Of Nodes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "cluster_identifier",
+          "node_type",
+          "number_of_nodes"
+        ],
+        "title": "ResizeClusterParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.resize_cluster",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_snapshots",
+      "description": "List snapshots for a Redshift provisioned cluster, or across the account if no cluster is given.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "default": "",
+            "description": "Optional: filter to snapshots of one cluster.",
+            "title": "Cluster Identifier",
+            "type": "string"
+          }
+        },
+        "title": "ListSnapshotsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "RedshiftSnapshot": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "snapshot_identifier": {
+                "default": "",
+                "title": "Snapshot Identifier",
+                "type": "string"
+              },
+              "cluster_identifier": {
+                "default": "",
+                "title": "Cluster Identifier",
+                "type": "string"
+              },
+              "snapshot_type": {
+                "default": "",
+                "title": "Snapshot Type",
+                "type": "string"
+              },
+              "node_type": {
+                "default": "",
+                "title": "Node Type",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "RedshiftSnapshot",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/RedshiftSnapshot"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "SnapshotList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_snapshots",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_workgroups",
+      "description": "List Redshift Serverless workgroups in the connected AWS account/region.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ListWorkgroupsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "RedshiftWorkgroup": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "workgroup_name": {
+                "default": "",
+                "title": "Workgroup Name",
+                "type": "string"
+              },
+              "namespace_name": {
+                "default": "",
+                "title": "Namespace Name",
+                "type": "string"
+              },
+              "base_capacity": {
+                "default": 0,
+                "title": "Base Capacity",
+                "type": "integer"
+              },
+              "publicly_accessible": {
+                "default": false,
+                "title": "Publicly Accessible",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "RedshiftWorkgroup",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/RedshiftWorkgroup"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "WorkgroupList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_workgroups",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "get_workgroup",
+      "description": "Read one Redshift Serverless workgroup in full by its name.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "workgroup_name": {
+            "description": "Workgroup name.",
+            "title": "Workgroup Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workgroup_name"
+        ],
+        "title": "GetWorkgroupParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "workgroup_name": {
+            "default": "",
+            "title": "Workgroup Name",
+            "type": "string"
+          },
+          "namespace_name": {
+            "default": "",
+            "title": "Namespace Name",
+            "type": "string"
+          },
+          "base_capacity": {
+            "default": 0,
+            "title": "Base Capacity",
+            "type": "integer"
+          },
+          "publicly_accessible": {
+            "default": false,
+            "title": "Publicly Accessible",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "RedshiftWorkgroup",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.get_workgroup",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_namespaces",
+      "description": "List Redshift Serverless namespaces in the connected AWS account/region.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ListNamespacesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "RedshiftNamespace": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "namespace_name": {
+                "default": "",
+                "title": "Namespace Name",
+                "type": "string"
+              },
+              "db_name": {
+                "default": "",
+                "title": "Db Name",
+                "type": "string"
+              },
+              "admin_username": {
+                "default": "",
+                "title": "Admin Username",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "RedshiftNamespace",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/RedshiftNamespace"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "NamespaceList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_namespaces",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_databases",
+      "description": "List databases available on a Redshift cluster or Serverless workgroup, via the Data API.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "default": "",
+            "description": "Provisioned cluster identifier (set this OR workgroup_name).",
+            "title": "Cluster Identifier",
+            "type": "string"
+          },
+          "workgroup_name": {
+            "default": "",
+            "description": "Serverless workgroup name (set this OR cluster_identifier).",
+            "title": "Workgroup Name",
+            "type": "string"
+          },
+          "database": {
+            "default": "dev",
+            "description": "Database to connect through for listing, e.g. 'dev'.",
+            "title": "Database",
+            "type": "string"
+          },
+          "db_user": {
+            "default": "",
+            "description": "Database user for provisioned clusters using temporary credentials (IAM auth).",
+            "title": "Db User",
+            "type": "string"
+          },
+          "secret_arn": {
+            "default": "",
+            "description": "Secrets Manager secret ARN holding DB credentials, alternative to db_user.",
+            "title": "Secret Arn",
+            "type": "string"
+          }
+        },
+        "title": "ListDatabasesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "RedshiftDatabase": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "database_name": {
+                "default": "",
+                "title": "Database Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "RedshiftDatabase",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/RedshiftDatabase"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DatabaseList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_databases",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "execute_sql",
+      "description": "Run a SQL statement against Redshift (provisioned cluster or Serverless workgroup) via the Data API. Returns a statement id -- poll get_statement_status, then get_statement_result.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "create:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "cluster_identifier": {
+            "default": "",
+            "description": "Provisioned cluster identifier (set this OR workgroup_name).",
+            "title": "Cluster Identifier",
+            "type": "string"
+          },
+          "workgroup_name": {
+            "default": "",
+            "description": "Serverless workgroup name (set this OR cluster_identifier).",
+            "title": "Workgroup Name",
+            "type": "string"
+          },
+          "database": {
+            "description": "Database to run the query against, e.g. 'dev'.",
+            "title": "Database",
+            "type": "string"
+          },
+          "db_user": {
+            "default": "",
+            "description": "Database user for provisioned clusters using temporary credentials (IAM auth).",
+            "title": "Db User",
+            "type": "string"
+          },
+          "secret_arn": {
+            "default": "",
+            "description": "Secrets Manager secret ARN holding DB credentials, alternative to db_user.",
+            "title": "Secret Arn",
+            "type": "string"
+          },
+          "sql": {
+            "description": "SQL statement to run, e.g. SELECT * FROM public.users LIMIT 100.",
+            "title": "Sql",
+            "type": "string"
+          }
+        },
+        "required": [
+          "database",
+          "sql"
+        ],
+        "title": "ExecuteSqlParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "statement_id": {
+            "default": "",
+            "title": "Statement Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "StatementSubmitResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.execute_sql",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "get_statement_status",
+      "description": "Read a SQL statement's current status by id from execute_sql -- whether it's done, and row/duration info.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "statement_id": {
+            "description": "Statement id returned by execute_sql.",
+            "title": "Statement Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id"
+        ],
+        "title": "GetStatementStatusParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "statement_id": {
+            "default": "",
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "error": {
+            "default": "",
+            "title": "Error",
+            "type": "string"
+          },
+          "has_result_set": {
+            "default": false,
+            "title": "Has Result Set",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "StatementStatus",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.get_statement_status",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "get_statement_result",
+      "description": "Read the result rows of a completed SQL statement by id from execute_sql.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "statement_id": {
+            "description": "Statement id returned by execute_sql, once its status is FINISHED.",
+            "title": "Statement Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id"
+        ],
+        "title": "GetStatementResultParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "columns": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Columns",
+            "type": "array"
+          },
+          "rows": {
+            "default": [],
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "total_rows": {
+            "default": 0,
+            "title": "Total Rows",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "StatementResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.get_statement_result",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "cancel_statement",
+      "description": "Cancel a running SQL statement.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "update:resource"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "statement_id": {
+            "description": "Statement id to cancel.",
+            "title": "Statement Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id"
+        ],
+        "title": "CancelStatementParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.cancel_statement",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "list_statements",
+      "description": "List recent SQL statements run via the Data API in the connected AWS account/region.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ListStatementsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "StatementSummary": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "statement_id": {
+                "default": "",
+                "title": "Statement Id",
+                "type": "string"
+              },
+              "query_string": {
+                "default": "",
+                "title": "Query String",
+                "type": "string"
+              },
+              "created_at": {
+                "default": "",
+                "title": "Created At",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "StatementSummary",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "items": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/StatementSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "StatementList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.list_statements",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    },
+    {
+      "name": "audit_redshift",
+      "description": "Build one aggregated health report across the connected AWS account: publicly accessible clusters, clusters/workgroups with default settings that may indicate weak security posture.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection id; omit to use the only connected account.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "AuditRedshiftParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "AuditFinding": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "detail": {
+                "default": "",
+                "title": "Detail",
+                "type": "string"
+              },
+              "severity": {
+                "default": "",
+                "title": "Severity",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "title": "AuditFinding",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "findings": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/AuditFinding"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "clusters_scanned": {
+            "default": 0,
+            "title": "Clusters Scanned",
+            "type": "integer"
+          },
+          "workgroups_scanned": {
+            "default": 0,
+            "title": "Workgroups Scanned",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "AuditReport",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "redshift-connector.audit_redshift",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "redshift"
+    }
+  ],
+  "signals": [],
+  "schedules": [],
+  "required_scopes": [],
+  "icon_size_bytes": 303,
+  "lifecycle": {
+    "health_check": {
+      "interval_sec": 60
+    }
+  },
+  "secrets": [
+    {
+      "name": "redshift_connections",
+      "description": "Your connected AWS accounts for Redshift -- stored as a JSON array, one entry per account, each with its own IAM Access Key ID/Secret Access Key/session token and region. Managed through connect_redshift / disconnect_redshift -- you should not need to edit this directly.",
+      "required": true,
+      "write_mode": "both",
+      "max_bytes": 65536,
+      "scope": "user",
+      "rotation_hint_days": 90
+    }
+  ],
+  "panels": [
+    {
+      "panel_id": "secrets",
+      "slot": "right",
+      "title": "Secrets",
+      "tree": {},
+      "icon": "KeyRound",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "redshift_sidebar",
+      "slot": "left",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "redshift_clusters",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "redshift_serverless",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "redshift_databases",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "redshift_query",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "redshift_settings",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    }
+  ]
+}
