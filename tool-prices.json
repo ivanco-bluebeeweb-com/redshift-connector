@@ -1,0 +1,21 @@
+{
+  "audit_redshift": 40,
+  "cancel_statement": 20,
+  "connect_redshift": 0,
+  "delete_cluster": 20,
+  "disconnect_redshift": 0,
+  "execute_sql": 16,
+  "get_cluster": 8,
+  "get_statement_result": 8,
+  "get_statement_status": 8,
+  "get_workgroup": 8,
+  "list_clusters": 8,
+  "list_connections": 0,
+  "list_databases": 8,
+  "list_namespaces": 8,
+  "list_snapshots": 8,
+  "list_statements": 8,
+  "list_workgroups": 8,
+  "reboot_cluster": 16,
+  "resize_cluster": 16
+}
