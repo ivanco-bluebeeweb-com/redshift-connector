@@ -32,6 +32,8 @@ class ProviderConnection(sdl.Entity):
 
 
 class ProviderConnectionList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[ProviderConnection] = []
 
 
@@ -40,6 +42,8 @@ class DisconnectRedshiftParams(BaseModel):
 
 
 class DeleteResult(sdl.Entity):
+    id: str = ""
+    title: str = ""
     ok: bool = True
     detail: str = ""
 
@@ -51,6 +55,8 @@ class ListClustersParams(BaseModel):
 
 
 class RedshiftCluster(sdl.Entity):
+    id: str = ""
+    title: str = ""
     cluster_identifier: str = ""
     node_type: str = ""
     cluster_status: str = ""
@@ -60,6 +66,8 @@ class RedshiftCluster(sdl.Entity):
 
 
 class ClusterList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[RedshiftCluster] = []
 
 
@@ -93,6 +101,8 @@ class ListSnapshotsParams(BaseModel):
 
 
 class RedshiftSnapshot(sdl.Entity):
+    id: str = ""
+    title: str = ""
     snapshot_identifier: str = ""
     cluster_identifier: str = ""
     status: str = ""
@@ -101,6 +111,8 @@ class RedshiftSnapshot(sdl.Entity):
 
 
 class SnapshotList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[RedshiftSnapshot] = []
 
 
@@ -111,6 +123,8 @@ class ListWorkgroupsParams(BaseModel):
 
 
 class RedshiftWorkgroup(sdl.Entity):
+    id: str = ""
+    title: str = ""
     workgroup_name: str = ""
     namespace_name: str = ""
     status: str = ""
@@ -119,6 +133,8 @@ class RedshiftWorkgroup(sdl.Entity):
 
 
 class WorkgroupList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[RedshiftWorkgroup] = []
 
 
@@ -132,6 +148,8 @@ class ListNamespacesParams(BaseModel):
 
 
 class RedshiftNamespace(sdl.Entity):
+    id: str = ""
+    title: str = ""
     namespace_name: str = ""
     namespace_id: str = ""
     status: str = ""
@@ -140,6 +158,8 @@ class RedshiftNamespace(sdl.Entity):
 
 
 class NamespaceList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[RedshiftNamespace] = []
 
 
@@ -155,10 +175,14 @@ class ListDatabasesParams(BaseModel):
 
 
 class RedshiftDatabase(sdl.Entity):
+    id: str = ""
+    title: str = ""
     database_name: str = ""
 
 
 class DatabaseList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[RedshiftDatabase] = []
 
 
@@ -175,6 +199,8 @@ class ExecuteSqlParams(BaseModel):
 
 
 class StatementSubmitResult(sdl.Entity):
+    id: str = ""
+    title: str = ""
     statement_id: str = ""
     status: str = ""
     created_at: str = ""
@@ -186,6 +212,8 @@ class GetStatementStatusParams(BaseModel):
 
 
 class StatementStatus(sdl.Entity):
+    id: str = ""
+    title: str = ""
     statement_id: str = ""
     status: str = ""
     error: str = ""
@@ -201,6 +229,8 @@ class GetStatementResultParams(BaseModel):
 
 
 class StatementResult(sdl.Entity):
+    id: str = ""
+    title: str = ""
     columns: list[str] = []
     rows: list[list[str]] = []
     total_rows: int = 0
@@ -216,6 +246,8 @@ class ListStatementsParams(BaseModel):
 
 
 class StatementSummary(sdl.Entity):
+    id: str = ""
+    title: str = ""
     statement_id: str = ""
     status: str = ""
     query_string: str = ""
@@ -223,6 +255,8 @@ class StatementSummary(sdl.Entity):
 
 
 class StatementList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     items: list[StatementSummary] = []
 
 
@@ -233,12 +267,16 @@ class AuditRedshiftParams(BaseModel):
 
 
 class AuditFinding(sdl.Entity):
+    id: str = ""
+    title: str = ""
     kind: str = ""
     detail: str = ""
     severity: str = ""
 
 
 class AuditReport(sdl.Entity):
+    id: str = ""
+    title: str = ""
     findings: list[AuditFinding] = []
     clusters_scanned: int = 0
     workgroups_scanned: int = 0
