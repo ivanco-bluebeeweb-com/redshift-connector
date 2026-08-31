@@ -44,7 +44,7 @@ async def list_clusters(ctx, params: ListClustersParams) -> ActionResult:
         rows = await rsc.list_clusters(ctx, conn)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=ClusterList(items=[_to_cluster(c) for c in rows]))
+    return ActionResult.success(data=ClusterList(items=[_to_cluster(c) for c in rows]), summary="Clusters listed.")
 
 
 @chat.function(
@@ -66,7 +66,7 @@ async def get_cluster(ctx, params: GetClusterParams) -> ActionResult:
         return ActionResult.error(str(exc))
     if not c:
         return ActionResult.error(f"No cluster '{params.cluster_identifier}'.")
-    return ActionResult.success(data=_to_cluster(c))
+    return ActionResult.success(data=_to_cluster(c), summary="Cluster retrieved.")
 
 
 @chat.function(
@@ -87,7 +87,7 @@ async def delete_cluster(ctx, params: DeleteClusterParams) -> ActionResult:
         await rsc.delete_cluster(ctx, conn, params.cluster_identifier, params.skip_final_snapshot)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=DeleteResult(ok=True, detail=f"Cluster '{params.cluster_identifier}' deletion initiated."))
+    return ActionResult.success(data=DeleteResult(ok=True, detail=f"Cluster '{params.cluster_identifier}' deletion initiated."), summary="Cluster deleted.")
 
 
 @chat.function(
@@ -108,7 +108,7 @@ async def reboot_cluster(ctx, params: RebootClusterParams) -> ActionResult:
         await rsc.reboot_cluster(ctx, conn, params.cluster_identifier)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=DeleteResult(ok=True, detail="Reboot initiated."))
+    return ActionResult.success(data=DeleteResult(ok=True, detail="Reboot initiated."), summary="Reboot cluster done.")
 
 
 @chat.function(
@@ -129,7 +129,7 @@ async def resize_cluster(ctx, params: ResizeClusterParams) -> ActionResult:
         await rsc.resize_cluster(ctx, conn, params.cluster_identifier, params.node_type, params.number_of_nodes)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=DeleteResult(ok=True, detail="Resize initiated."))
+    return ActionResult.success(data=DeleteResult(ok=True, detail="Resize initiated."), summary="Resize cluster done.")
 
 
 @chat.function(
@@ -158,4 +158,4 @@ async def list_snapshots(ctx, params: ListSnapshotsParams) -> ActionResult:
         )
         for s in rows
     ]
-    return ActionResult.success(data=SnapshotList(items=items))
+    return ActionResult.success(data=SnapshotList(items=items), summary="Snapshots listed.")

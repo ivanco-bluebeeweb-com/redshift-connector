@@ -43,7 +43,7 @@ async def execute_sql(ctx, params: ExecuteSqlParams) -> ActionResult:
     return ActionResult.success(data=StatementSubmitResult(
         statement_id=data.get("Id", ""),
         created_at=str(data.get("CreatedAt", "")),
-    ))
+    ), summary="Execute sql done.")
 
 
 @chat.function(
@@ -69,7 +69,7 @@ async def get_statement_status(ctx, params: GetStatementStatusParams) -> ActionR
         error_message=data.get("Error", "") or "",
         result_rows=int(data.get("ResultRows", 0) or 0),
         duration_ns=int(data.get("Duration", 0) or 0),
-    ))
+    ), summary="Statement status retrieved.")
 
 
 @chat.function(
@@ -97,7 +97,7 @@ async def get_statement_result(ctx, params: GetStatementResultParams) -> ActionR
             col = columns[i] if i < len(columns) else f"col_{i}"
             row[col] = next(iter(field.values()), None) if isinstance(field, dict) else field
         rows.append(row)
-    return ActionResult.success(data=StatementResult(columns=columns, rows=rows))
+    return ActionResult.success(data=StatementResult(columns=columns, rows=rows), summary="Statement result retrieved.")
 
 
 @chat.function(
@@ -118,7 +118,7 @@ async def cancel_statement(ctx, params: CancelStatementParams) -> ActionResult:
         await rsc.cancel_statement(ctx, conn, params.statement_id)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=DeleteResult(ok=True, detail="Cancel requested."))
+    return ActionResult.success(data=DeleteResult(ok=True, detail="Cancel requested."), summary="Cancel statement done.")
 
 
 @chat.function(
@@ -147,4 +147,4 @@ async def list_statements(ctx, params: ListStatementsParams) -> ActionResult:
         )
         for s in rows
     ]
-    return ActionResult.success(data=StatementList(items=items))
+    return ActionResult.success(data=StatementList(items=items), summary="Statements listed.")

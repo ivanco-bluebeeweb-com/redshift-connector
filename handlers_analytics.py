@@ -61,4 +61,4 @@ async def audit_redshift(ctx, params: AuditRedshiftParams) -> ActionResult:
         findings=findings,
         clusters_scanned=len(clusters),
         workgroups_scanned=len(workgroups),
-    ))
+    ), summary="Redshift audit ready.")

@@ -50,7 +50,7 @@ async def list_workgroups(ctx, params: ListWorkgroupsParams) -> ActionResult:
         rows = await rsc.list_workgroups(ctx, conn)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=WorkgroupList(items=[_to_workgroup(w) for w in rows]))
+    return ActionResult.success(data=WorkgroupList(items=[_to_workgroup(w) for w in rows]), summary="Workgroups listed.")
 
 
 @chat.function(
@@ -72,7 +72,7 @@ async def get_workgroup(ctx, params: GetWorkgroupParams) -> ActionResult:
         return ActionResult.error(str(exc))
     if not w:
         return ActionResult.error(f"No workgroup '{params.workgroup_name}'.")
-    return ActionResult.success(data=_to_workgroup(w))
+    return ActionResult.success(data=_to_workgroup(w), summary="Workgroup retrieved.")
 
 
 @chat.function(
@@ -92,7 +92,7 @@ async def list_namespaces(ctx, params: ListNamespacesParams) -> ActionResult:
         rows = await rsc.list_namespaces(ctx, conn)
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=NamespaceList(items=[_to_namespace(n) for n in rows]))
+    return ActionResult.success(data=NamespaceList(items=[_to_namespace(n) for n in rows]), summary="Namespaces listed.")
 
 
 @chat.function(
@@ -116,4 +116,4 @@ async def list_databases(ctx, params: ListDatabasesParams) -> ActionResult:
         )
     except rsc.ClientFail as exc:
         return ActionResult.error(str(exc))
-    return ActionResult.success(data=DatabaseList(items=[RedshiftDatabase(**d) for d in rows]))
+    return ActionResult.success(data=DatabaseList(items=[RedshiftDatabase(**d) for d in rows]), summary="Databases listed.")
