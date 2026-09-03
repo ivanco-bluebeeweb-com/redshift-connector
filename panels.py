@@ -27,8 +27,7 @@ def _field(label: str, node: ui.UINode) -> ui.UINode:
 
 def _settings_button() -> ui.UINode:
     return ui.Button(
-        "App settings", variant="secondary", full_width=True,
-        on_click=ui.Call("__panel__redshift_settings"),
+        "App settings", variant="secondary", on_click=ui.Call("__panel__redshift_settings"),
     )
 
 
